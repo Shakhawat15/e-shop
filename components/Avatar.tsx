@@ -3,7 +3,7 @@ import { FC } from "react";
 import { FaUserCircle } from "react-icons/fa";
 
 type AvatarProps = {
-  src: string | null | undefined;
+  src?: string | null | undefined;
 };
 
 const Avatar: FC<AvatarProps> = ({ src }) => {
