@@ -1,16 +1,24 @@
 "use client";
 
 import { useCart } from "@/hooks/useCart";
-import Link from "next/link";
-import { MdArrowBack } from "react-icons/md";
-import Heading from "../Heading";
-import Image from "next/image";
-import Button from "../Button";
-import ItemContent from "./ItemContent";
+import { SafeUser } from "@/types";
 import { FormatPrice } from "@/utils/FormatPrice";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FC } from "react";
+import { MdArrowBack } from "react-icons/md";
+import Button from "../Button";
+import Heading from "../Heading";
+import ItemContent from "./ItemContent";
 
-const CartClient = () => {
+type CartClientProps = {
+  currentUser: SafeUser | null;
+};
+
+const CartClient: FC<CartClientProps> = ({ currentUser }) => {
   const { cartProducts, handleClearCart, cartTotalAmount } = useCart();
+
+  const router = useRouter();
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
@@ -60,7 +68,13 @@ const CartClient = () => {
           <p className="text-slate-500">
             Taxes and shipping calculated at checkout
           </p>
-          <Button label="Checkout" onClick={() => {}} />
+          <Button
+            label={currentUser ? "Checkout" : "Login To Checkout"}
+            outline={currentUser ? false : true}
+            onClick={() => {
+              currentUser ? router.push("/checkout") : router.push("/login");
+            }}
+          />
           <Link
             href={"/"}
             className="text-slate-500 flex items-center gap-1 mt-2"
